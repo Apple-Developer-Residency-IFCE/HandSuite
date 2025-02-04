@@ -1,0 +1,6 @@
+framework module HandSuite {
+  umbrella header "HandSuite.h"
+  export *
+
+  module * { export * }
+}

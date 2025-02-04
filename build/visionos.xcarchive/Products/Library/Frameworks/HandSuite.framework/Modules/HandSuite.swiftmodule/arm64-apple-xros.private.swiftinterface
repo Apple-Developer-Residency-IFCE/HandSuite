@@ -1,0 +1,350 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.2 effective-5.10 (swiftlang-6.0.2.1.2 clang-1600.0.26.4)
+// swift-module-flags: -target arm64-apple-xros1.3 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name HandSuite
+import ARKit
+import Foundation
+@_exported import HandSuite
+import RealityKit
+import Swift
+import SwiftUI
+import _Concurrency
+import _RealityKit_SwiftUI
+import _StringProcessing
+import _SwiftConcurrencyShims
+extension HandSuite.HandSuiteTools {
+  public struct FingerDescription {
+    public let name: HandSuite.Hand.Finger.Name
+    public let curlness: Swift.Float
+    public let state: HandSuite.HandSuiteTools.State
+    public let direction: HandSuite.HandSuiteTools.Direction
+    public init(name: HandSuite.Hand.Finger.Name, curlness: Swift.Float = 0.0, state: HandSuite.HandSuiteTools.State = .neutral, direction: HandSuite.HandSuiteTools.Direction = .any)
+  }
+}
+extension HandSuite.HandSuiteTools.FingerDescription : Swift.Hashable {
+  public static func == (lhs: HandSuite.HandSuiteTools.FingerDescription, rhs: HandSuite.HandSuiteTools.FingerDescription) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public struct GestureStepDescription {
+    public let isSimultaneous: Swift.Bool
+    public let gesture: any HandSuite.HandSuiteTools.GestureScheme
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public enum Chirality : Swift.Int, Swift.CaseIterable {
+    case either
+    case left
+    case right
+    public init?(rawValue: Swift.Int)
+    public typealias AllCases = [HandSuite.HandSuiteTools.Chirality]
+    public typealias RawValue = Swift.Int
+    nonisolated public static var allCases: [HandSuite.HandSuiteTools.Chirality] {
+      get
+    }
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public enum Direction : Swift.Int, Swift.CaseIterable {
+    case any
+    case up
+    case down
+    case front
+    case back
+    case left
+    case right
+    public init?(rawValue: Swift.Int)
+    public typealias AllCases = [HandSuite.HandSuiteTools.Direction]
+    public typealias RawValue = Swift.Int
+    nonisolated public static var allCases: [HandSuite.HandSuiteTools.Direction] {
+      get
+    }
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public enum GestureDescription {
+    case hand(Swift.Set<HandSuite.HandSuiteTools.FingerDescription>, [HandSuite.HandSuiteTools.JointComparison])
+    case finger(HandSuite.HandSuiteTools.FingerDescription)
+    case steps([HandSuite.HandSuiteTools.GestureStepDescription])
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public enum JointDistanceConstraint {
+    case greaterThanOrEqualTo(_: Swift.Float)
+    case lessThanOrEqualTo(_: Swift.Float)
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public enum State : Swift.Int, Swift.CaseIterable {
+    case neutral
+    case straight
+    case curl
+    public init?(rawValue: Swift.Int)
+    public typealias AllCases = [HandSuite.HandSuiteTools.State]
+    public typealias RawValue = Swift.Int
+    nonisolated public static var allCases: [HandSuite.HandSuiteTools.State] {
+      get
+    }
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+}
+extension ARKit.HandSkeleton {
+  public static let reciprocal: [HandSuite.Hand.Finger.Name : [HandSuite.Hand.Joint.Name : ARKit.HandSkeleton.JointName]]
+}
+extension RealityFoundation.ModelEntity {
+  @_Concurrency.MainActor @preconcurrency public static func createSphere(radius: Swift.Float = 0.005, hexColor: Swift.String = "FAF9F6") -> RealityFoundation.ModelEntity
+}
+extension Swift.SIMD3 : Swift.Sendable {
+}
+extension UIKit.UIColor {
+  convenience public init(hex: Swift.String)
+}
+extension HandSuite.HandSuiteTools {
+  public class HandGesture : HandSuite.HandSuiteTools.GestureScheme {
+    final public let chirality: HandSuite.HandSuiteTools.Chirality
+    final public let direction: HandSuite.HandSuiteTools.Direction
+    final public let description: HandSuite.HandSuiteTools.GestureDescription
+    public var recognitionEvents: HandSuite.HandSuiteTools.HandsEvents {
+      get
+      set
+      _modify
+    }
+    @_Concurrency.MainActor public init(chirality: HandSuite.HandSuiteTools.Chirality = .either, direction: HandSuite.HandSuiteTools.Direction = .any, _ description: Swift.Set<HandSuite.HandSuiteTools.FingerDescription>, jointComparisons: [HandSuite.HandSuiteTools.JointComparison] = [])
+    @objc deinit
+  }
+}
+extension HandSuite.HandSuiteTools.HandGesture : Observation.Observable {
+}
+extension HandSuite.Hand {
+  @_hasMissingDesignatedInitializers final public class Finger : @unchecked Swift.Sendable {
+    final public let name: HandSuite.Hand.Finger.Name
+    weak final public var hand: HandSuite.Hand? {
+      get
+    }
+    final public var direction: HandSuite.HandSuiteTools.Direction {
+      get
+    }
+    final public var state: HandSuite.HandSuiteTools.State {
+      get
+    }
+    final public var curlness: Swift.Float {
+      get
+    }
+    final public var knuckle: HandSuite.Hand.Joint? {
+      get
+    }
+    final public var intermediateBase: HandSuite.Hand.Joint? {
+      get
+    }
+    final public var metacarpal: HandSuite.Hand.Joint? {
+      get
+    }
+    final public var intermediateTip: HandSuite.Hand.Joint? {
+      get
+    }
+    final public var tip: HandSuite.Hand.Joint? {
+      get
+    }
+    final public var joints: [HandSuite.Hand.Joint.Name : HandSuite.Hand.Joint] {
+      get
+    }
+    @_Concurrency.MainActor final public func update(using anchor: ARKit.HandAnchor) async
+    final public func getJoint(named name: HandSuite.Hand.Joint.Name) -> HandSuite.Hand.Joint?
+    final public func getCurlness() async -> Swift.Float
+    @objc deinit
+  }
+}
+extension HandSuite.Hand.Finger {
+  public enum Name : Swift.Int, Swift.CaseIterable {
+    case thumb
+    case index
+    case middle
+    case ring
+    case little
+    public init?(rawValue: Swift.Int)
+    public typealias AllCases = [HandSuite.Hand.Finger.Name]
+    public typealias RawValue = Swift.Int
+    nonisolated public static var allCases: [HandSuite.Hand.Finger.Name] {
+      get
+    }
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+}
+extension HandSuite.Hand.Finger : Observation.Observable {
+}
+final public class Hand : @unchecked Swift.Sendable {
+  final public let chirality: HandSuite.HandSuiteTools.Chirality
+  final public var currentAnchor: ARKit.HandAnchor? {
+    get
+  }
+  final public var thumb: HandSuite.Hand.Finger? {
+    get
+  }
+  final public var indexFinger: HandSuite.Hand.Finger? {
+    get
+  }
+  final public var middleFinger: HandSuite.Hand.Finger? {
+    get
+  }
+  final public var ringFinger: HandSuite.Hand.Finger? {
+    get
+  }
+  final public var littleFinger: HandSuite.Hand.Finger? {
+    get
+  }
+  final public var fingers: [HandSuite.Hand.Finger.Name : HandSuite.Hand.Finger] {
+    get
+  }
+  final public var joints: [ARKit.HandSkeleton.JointName : HandSuite.Hand.Joint] {
+    get
+  }
+  public init(chirality: HandSuite.HandSuiteTools.Chirality)
+  @objc deinit
+}
+extension HandSuite.Hand : Observation.Observable {
+}
+extension HandSuite.HandSuiteTools {
+  public struct HandEvent {
+    public let wasRecognized: Swift.Bool
+    public let hand: HandSuite.Hand
+    public var anchor: ARKit.HandAnchor? {
+      get
+    }
+  }
+  public struct HandsEvents {
+    public var leftHand: HandSuite.HandSuiteTools.HandEvent?
+    public var rightHand: HandSuite.HandSuiteTools.HandEvent?
+  }
+}
+extension HandSuite.HandSuiteTools.HandEvent : Swift.Hashable {
+  public static func == (lhs: HandSuite.HandSuiteTools.HandEvent, rhs: HandSuite.HandSuiteTools.HandEvent) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension HandSuite.Hand {
+  @_hasMissingDesignatedInitializers final public class Joint : @unchecked Swift.Sendable {
+    final public let name: HandSuite.Hand.Joint.Name
+    final public let skeleton: ARKit.HandSkeleton.JointName
+    @_Concurrency.MainActor final public var model: RealityFoundation.ModelEntity? {
+      get
+    }
+    weak final public var finger: HandSuite.Hand.Finger? {
+      get
+    }
+    @_Concurrency.MainActor final public func setModel(_ model: RealityFoundation.ModelEntity)
+    @_Concurrency.MainActor final public func getModelTransform() -> RealityFoundation.Transform?
+    @_Concurrency.MainActor final public func setModelTransform(_ transform: RealityFoundation.Transform)
+    final public func getCurrentPosition() -> Swift.SIMD3<Swift.Float>?
+    @objc deinit
+  }
+}
+extension HandSuite.Hand.Joint {
+  public enum Name : Swift.String, Swift.CaseIterable {
+    case intermediateBase
+    case intermediateTip
+    case metacarpal
+    case knuckle
+    case tip
+    public init?(rawValue: Swift.String)
+    public typealias AllCases = [HandSuite.Hand.Joint.Name]
+    public typealias RawValue = Swift.String
+    nonisolated public static var allCases: [HandSuite.Hand.Joint.Name] {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public struct JointComparison {
+    public let firstFinger: HandSuite.Hand.Finger.Name
+    public let firstJoint: HandSuite.Hand.Joint.Name
+    public let secondFinger: HandSuite.Hand.Finger.Name
+    public let secondJoint: HandSuite.Hand.Joint.Name
+    public let constraint: HandSuite.HandSuiteTools.JointDistanceConstraint
+    public init(firstFinger: HandSuite.Hand.Finger.Name, firstJoint: HandSuite.Hand.Joint.Name, secondFinger: HandSuite.Hand.Finger.Name, secondJoint: HandSuite.Hand.Joint.Name, constraint: HandSuite.HandSuiteTools.JointDistanceConstraint)
+  }
+}
+extension HandSuite.HandSuiteTools {
+  public protocol GestureScheme : AnyObject {
+    var chirality: HandSuite.HandSuiteTools.Chirality { get }
+    var direction: HandSuite.HandSuiteTools.Direction { get }
+    var description: HandSuite.HandSuiteTools.GestureDescription { get }
+    var wasRecognized: Swift.Bool { get }
+    var recognitionEvents: HandSuite.HandSuiteTools.HandsEvents { get set }
+    var leftEvent: HandSuite.HandSuiteTools.HandEvent? { get }
+    var rightEvent: HandSuite.HandSuiteTools.HandEvent? { get }
+    func recognize(in hand: HandSuite.Hand) async
+  }
+}
+extension HandSuite.HandSuiteTools.GestureScheme {
+  public var leftEvent: HandSuite.HandSuiteTools.HandEvent? {
+    get
+  }
+  public var rightEvent: HandSuite.HandSuiteTools.HandEvent? {
+    get
+  }
+  public var wasRecognized: Swift.Bool {
+    get
+  }
+  public func recognize(in hand: HandSuite.Hand)
+}
+extension Swift.SIMD3 where Scalar == Swift.Float {
+  public func distance(to point: Swift.SIMD3<Swift.Float>) -> Swift.Float
+}
+public struct HandSuiteTools {
+}
+@_hasMissingDesignatedInitializers @globalActor public actor HandSuiteActor : _Concurrency.GlobalActor {
+  public static let shared: HandSuite.HandSuiteActor
+  public typealias ActorType = HandSuite.HandSuiteActor
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+extension HandSuite.HandSuiteTools {
+  final public class Tracker : @unchecked Swift.Sendable {
+    final public let leftHand: HandSuite.Hand
+    final public let rightHand: HandSuite.Hand
+    public init(session: ARKit.ARKitSession = .init(), provider: ARKit.HandTrackingProvider = .init())
+    final public func requestAuthorization() async
+    final public func track() async
+    @_Concurrency.MainActor final public func addToContent(_ content: _RealityKit_SwiftUI.RealityViewContent)
+    @_Concurrency.MainActor final public func install(gesture: any HandSuite.HandSuiteTools.GestureScheme)
+    @_Concurrency.MainActor final public func processGestures()
+    @objc deinit
+  }
+}
+extension HandSuite.HandSuiteTools.Tracker : Observation.Observable {
+}
+extension HandSuite.HandSuiteTools.Chirality : Swift.Equatable {}
+extension HandSuite.HandSuiteTools.Chirality : Swift.Hashable {}
+extension HandSuite.HandSuiteTools.Chirality : Swift.RawRepresentable {}
+extension HandSuite.HandSuiteTools.Direction : Swift.Equatable {}
+extension HandSuite.HandSuiteTools.Direction : Swift.Hashable {}
+extension HandSuite.HandSuiteTools.Direction : Swift.RawRepresentable {}
+extension HandSuite.HandSuiteTools.State : Swift.Equatable {}
+extension HandSuite.HandSuiteTools.State : Swift.Hashable {}
+extension HandSuite.HandSuiteTools.State : Swift.RawRepresentable {}
+extension HandSuite.Hand.Finger.Name : Swift.Equatable {}
+extension HandSuite.Hand.Finger.Name : Swift.Hashable {}
+extension HandSuite.Hand.Finger.Name : Swift.RawRepresentable {}
+extension HandSuite.Hand.Joint.Name : Swift.Equatable {}
+extension HandSuite.Hand.Joint.Name : Swift.Hashable {}
+extension HandSuite.Hand.Joint.Name : Swift.RawRepresentable {}
