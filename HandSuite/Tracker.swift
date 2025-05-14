@@ -71,6 +71,11 @@ public extension HandSuiteTools {
         public func install(gesture: any HandSuiteTools.GestureScheme) {
             self.gestures.append(gesture)
         }
+        
+        @MainActor
+        public func remove(gesture: any HandSuiteTools.GestureScheme) {
+            self.gestures.removeAll { $0 === gesture }
+        }
 
         @MainActor
         public func processGestures() {

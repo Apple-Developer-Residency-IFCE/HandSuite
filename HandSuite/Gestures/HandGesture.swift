@@ -15,6 +15,18 @@ public extension HandSuiteTools {
         public let description: HandSuiteTools.GestureDescription
 
         public var recognitionEvents: HandSuiteTools.HandsEvents
+        
+        @MainActor
+        public init(
+            chirality: HandSuiteTools.Chirality = .either,
+            direction: HandSuiteTools.Direction = .any,
+            description: HandSuiteTools.GestureDescription
+        ) {
+            self.chirality = chirality
+            self.direction = direction
+            self.description = description
+            self.recognitionEvents = .init()
+        }
 
         @MainActor
         public init(chirality: HandSuiteTools.Chirality = .either,
