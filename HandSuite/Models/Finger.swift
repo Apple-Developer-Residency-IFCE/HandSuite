@@ -116,6 +116,10 @@ public extension Hand {
 
             return totalCurl / Float(segmentCount)
         }
+        
+        public func updateDirection(_ newDirection: HandSuiteTools.Direction) {
+            self.direction = newDirection
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.0.2 effective-5.10 (swiftlang-6.0.2.1.2 clang-1600.0.26.4)
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
 // swift-module-flags: -target x86_64-apple-xros1.3-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name HandSuite
 import ARKit
 import Foundation
@@ -119,6 +119,7 @@ extension HandSuite.HandSuiteTools {
       set
       _modify
     }
+    @_Concurrency.MainActor public init(chirality: HandSuite.HandSuiteTools.Chirality = .either, direction: HandSuite.HandSuiteTools.Direction = .any, description: HandSuite.HandSuiteTools.GestureDescription)
     @_Concurrency.MainActor public init(chirality: HandSuite.HandSuiteTools.Chirality = .either, direction: HandSuite.HandSuiteTools.Direction = .any, _ description: Swift.Set<HandSuite.HandSuiteTools.FingerDescription>, jointComparisons: [HandSuite.HandSuiteTools.JointComparison] = [])
     @objc deinit
   }
@@ -327,6 +328,7 @@ extension HandSuite.HandSuiteTools {
     final public func track() async
     @_Concurrency.MainActor final public func addToContent(_ content: _RealityKit_SwiftUI.RealityViewContent)
     @_Concurrency.MainActor final public func install(gesture: any HandSuite.HandSuiteTools.GestureScheme)
+    @_Concurrency.MainActor final public func remove(gesture: any HandSuite.HandSuiteTools.GestureScheme)
     @_Concurrency.MainActor final public func processGestures()
     @objc deinit
   }

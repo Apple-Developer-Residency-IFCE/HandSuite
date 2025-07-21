@@ -44,6 +44,12 @@ public extension HandSuiteTools.GestureScheme {
 
         let wasRecognized = fingers.allSatisfy { fingerDescription in
             let finger = hand.getFinger(named: fingerDescription.name)
+            
+            if isPalmFacingCamera(for: hand) {
+                finger.updateDirection(.front)
+            } else {
+                finger.updateDirection(.back)
+            }
 
             let curlnessAccepted = fingerDescription.state == .straight ? true : finger.curlness >=  fingerDescription.curlness
             let stateAccepted = fingerDescription.state == .neutral ? true : finger.state == fingerDescription.state
@@ -87,6 +93,24 @@ public extension HandSuiteTools.GestureScheme {
 
         if hand.chirality == .right {
             self.recognitionEvents.rightHand = event
+        }
+    }
+    
+    func isPalmFacingCamera(for hand: Hand) -> Bool {
+        if let indexBase = hand.joints[.indexFingerMetacarpal]?.getCurrentPosition(),
+           let littleBase = hand.joints[.littleFingerMetacarpal]?.getCurrentPosition(),
+           let middleBase = hand.joints[.middleFingerMetacarpal]?.getCurrentPosition() {
+            let vectorA = indexBase - middleBase
+            let vectorB = littleBase - middleBase
+
+            let normal = simd_normalize(simd_cross(vectorB, vectorA))
+            print("mao", hand.chirality)
+            let finalNormal = (hand.chirality == .left) ? -normal : normal
+            let cameraForward = simd_float3(0, 0, -1)
+            let dot = simd_dot(finalNormal, cameraForward)
+            return dot > 0
+        } else {
+            return false
         }
     }
 }
