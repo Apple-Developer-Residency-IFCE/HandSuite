@@ -104,7 +104,6 @@ public extension HandSuiteTools.GestureScheme {
             let vectorB = littleBase - middleBase
 
             let normal = simd_normalize(simd_cross(vectorB, vectorA))
-            print("mao", hand.chirality)
             let finalNormal = (hand.chirality == .left) ? -normal : normal
             let cameraForward = simd_float3(0, 0, -1)
             let dot = simd_dot(finalNormal, cameraForward)
