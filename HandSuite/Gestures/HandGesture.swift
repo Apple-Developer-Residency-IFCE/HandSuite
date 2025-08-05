@@ -15,28 +15,32 @@ public extension HandSuiteTools {
         public let description: HandSuiteTools.GestureDescription
 
         public var recognitionEvents: HandSuiteTools.HandsEvents
+        public var gestureId: String
         
         @MainActor
         public init(
             chirality: HandSuiteTools.Chirality = .either,
             direction: HandSuiteTools.Direction = .any,
-            description: HandSuiteTools.GestureDescription
+            description: HandSuiteTools.GestureDescription,
+            gestureId: String
         ) {
             self.chirality = chirality
             self.direction = direction
             self.description = description
             self.recognitionEvents = .init()
+            self.gestureId = gestureId
         }
 
         @MainActor
         public init(chirality: HandSuiteTools.Chirality = .either,
                     direction: HandSuiteTools.Direction = .any,
                     _ description: Set<HandSuiteTools.FingerDescription>,
-                    jointComparisons: [HandSuiteTools.JointComparison] = []) {
+                    jointComparisons: [HandSuiteTools.JointComparison] = [], gestureId: String) {
             self.chirality = chirality
             self.direction = direction
             self.description = .hand(description, jointComparisons)
             self.recognitionEvents = .init()
+            self.gestureId = gestureId
         }
     }
 }
