@@ -58,18 +58,8 @@ public extension Hand {
             self.curlness = await getCurlAmount() / 0.5
             self.state = self.curlness > 0.15 ? .curl : .straight
             
-            if let tip = tip?.getCurrentPosition(), let knuckle = knuckle?.getCurrentPosition() {
-                let directionVector = normalize(tip - knuckle)
-                self.direction = setDirection(from: directionVector)
-            } else if let tip = intermediateTip?.getCurrentPosition(), let base = intermediateBase?.getCurrentPosition() {
-                let directionVector = normalize(tip - base)
-                self.direction = setDirection(from: directionVector)
-            } else {
-                self.direction = .any
-            }
-
-            // TODO: Track the direction of finger based on user position and hand position
-//            updateDirection()
+            let directionVector = calculateFingerDirection()
+            self.direction = updateDirection(from: directionVector)
         }
 
         @MainActor
@@ -88,7 +78,7 @@ public extension Hand {
             return self.joints[name]
         }
         
-        private func setDirection(from vector: SIMD3<Float>?) -> HandSuiteTools.Direction {
+        private func updateDirection(from vector: SIMD3<Float>?) -> HandSuiteTools.Direction {
             guard let vector = vector, length(vector) > 0.0001 else {
                 return .any // fallback
             }
@@ -105,6 +95,16 @@ public extension Hand {
             return referenceVectors.max(by: {
                 dot(normalize(vector), $0.value) < dot(normalize(vector), $1.value)
             })?.key ?? .any
+        }
+        
+        private func calculateFingerDirection() -> SIMD3<Float>? {
+            if let tip = tip?.getCurrentPosition(), let knuckle = knuckle?.getCurrentPosition() {
+                return normalize(tip - knuckle)
+            } else if let tip = intermediateTip?.getCurrentPosition(), let base = intermediateBase?.getCurrentPosition() {
+                return normalize(tip - base)
+            } else {
+                return nil
+            }
         }
 
 
