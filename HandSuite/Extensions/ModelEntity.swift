@@ -40,7 +40,8 @@ public extension ModelEntity {
     static func removeAnimation(from content: RealityViewContent, entity: Entity?, anchor: AnchorEntity?) async -> Bool {
         if let previousEntity = entity,
            let animDuration = animationDuration(for: previousEntity) {
-            try? await Task.sleep(for: .seconds(1))
+            let sleepDuration = animDuration * 1
+            try? await Task.sleep(for: .seconds(sleepDuration))
         }
 
         await MainActor.run {
