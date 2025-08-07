@@ -13,6 +13,45 @@ public extension ModelEntity {
         let simpleMaterial = SimpleMaterial(color: UIColor(hex: hexColor), isMetallic: false)
         return ModelEntity(mesh: .generateSphere(radius: radius), materials: [simpleMaterial])
     }
+    
+    static private func animationDuration(for entity: Entity) -> TimeInterval? {
+        entity.availableAnimations.first?.definition.duration
+    }
+    
+    static func createAnimation(to content: RealityViewContent, name: String, bundle: Bundle) async throws -> (entity: Entity, anchor: AnchorEntity) {
+        let entity = try await Entity(named: name, in: bundle)
+        let anchor = AnchorEntity(.hand(.either, location: .palm))
+
+        entity.scale = SIMD3<Float>(repeating: 0.05)
+        anchor.addChild(entity)
+
+        await MainActor.run {
+            content.add(anchor)
+        }
+
+        if let animation = entity.availableAnimations.first {
+            // TODO: Create a Transform rotation function
+            entity.playAnimation(animation, transitionDuration: 0.1)
+        }
+        return (entity, anchor)
+    }
+    
+    @discardableResult
+    static func removeAnimation(from content: RealityViewContent, entity: Entity?, anchor: AnchorEntity?) async -> Bool {
+        if let previousEntity = entity,
+           let animDuration = animationDuration(for: previousEntity) {
+            let sleepDuration = animDuration * 1
+            try? await Task.sleep(for: .seconds(sleepDuration))
+        }
+
+        await MainActor.run {
+            if let anchor {
+                content.remove(anchor)
+                anchor.removeFromParent()
+            }
+        }
+        return true
+    }
 }
 
 extension SIMD3: Sendable {}
