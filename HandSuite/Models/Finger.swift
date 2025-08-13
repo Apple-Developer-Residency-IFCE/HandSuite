@@ -57,8 +57,9 @@ public extension Hand {
 
             self.curlness = await getCurlAmount() / 0.5
             self.state = self.curlness > 0.15 ? .curl : .straight
-            // TODO: Track the direction of finger based on user position and hand position
-//            updateDirection()
+            
+            let directionVector = calculateFingerDirection()
+            self.direction = updateDirection(from: directionVector)
         }
 
         @MainActor
@@ -76,6 +77,37 @@ public extension Hand {
         public func getJoint(named name: Hand.Joint.Name) -> Joint? {
             return self.joints[name]
         }
+        
+        private func updateDirection(from vector: SIMD3<Float>?) -> HandSuiteTools.Direction {
+            guard let vector = vector, length(vector) > 0.0001 else {
+                return .any // fallback
+            }
+
+            let referenceVectors: [HandSuiteTools.Direction: SIMD3<Float>] = [
+                .up:    SIMD3(0, 1, 0),
+                .down:  SIMD3(0, -1, 0),
+                .left:  SIMD3(-1, 0, 0),
+                .right: SIMD3(1, 0, 0),
+                .front: SIMD3(0, 0, -1),
+                .back:  SIMD3(0, 0, 1)
+            ]
+
+            return referenceVectors.max(by: {
+                dot(normalize(vector), $0.value) < dot(normalize(vector), $1.value)
+            })?.key ?? .any
+        }
+        
+        private func calculateFingerDirection() -> SIMD3<Float>? {
+            if let tip = tip?.getCurrentPosition(), let knuckle = knuckle?.getCurrentPosition() {
+                return normalize(tip - knuckle)
+            } else if let tip = intermediateTip?.getCurrentPosition(), let base = intermediateBase?.getCurrentPosition() {
+                return normalize(tip - base)
+            } else {
+                return nil
+            }
+        }
+
+
 
         public func getCurlness() async -> Float {
             return self.curlness
