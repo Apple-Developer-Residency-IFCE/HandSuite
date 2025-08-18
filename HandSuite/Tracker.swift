@@ -81,16 +81,16 @@ public extension HandSuiteTools {
         public func processGestures() {
             for gesture in gestures {
                 if gesture.chirality == .left {
-                    Task { gesture.recognize(in: self.leftHand) }
+                    gesture.recognize(in: self.leftHand)
                 }
 
                 if gesture.chirality == .right {
-                    Task { gesture.recognize(in: self.rightHand) }
+                    gesture.recognize(in: self.rightHand)
                 }
 
                 if gesture.chirality == .either {
-                    Task { gesture.recognize(in: self.leftHand) }
-                    Task { gesture.recognize(in: self.rightHand) }
+                    gesture.recognize(in: self.leftHand)
+                    gesture.recognize(in: self.rightHand)
                 }
             }
         }

@@ -20,6 +20,7 @@ public extension HandSuiteTools {
         public init(
             chirality: HandSuiteTools.Chirality = .either,
             direction: HandSuiteTools.Direction = .any,
+            
             description: HandSuiteTools.GestureDescription
         ) {
             self.chirality = chirality
@@ -35,7 +36,7 @@ public extension HandSuiteTools {
                     jointComparisons: [HandSuiteTools.JointComparison] = []) {
             self.chirality = chirality
             self.direction = direction
-            self.description = .hand(description, jointComparisons)
+            self.description = .hand(direction, description, jointComparisons)
             self.recognitionEvents = .init()
         }
     }

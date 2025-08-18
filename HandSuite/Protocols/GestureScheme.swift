@@ -40,7 +40,7 @@ public extension HandSuiteTools.GestureScheme {
     }
 
     func recognize(in hand: Hand) {
-        guard case .hand(let fingers, let jointComparisons) = description else { return }
+        guard case .hand(let direction, let fingers, let jointComparisons) = description else { return }
 
         let wasRecognized = fingers.allSatisfy { fingerDescription in
             let finger = hand.getFinger(named: fingerDescription.name)
@@ -53,9 +53,10 @@ public extension HandSuiteTools.GestureScheme {
 
             let curlnessAccepted = fingerDescription.state == .straight ? true : finger.curlness >=  fingerDescription.curlness
             let stateAccepted = fingerDescription.state == .neutral ? true : finger.state == fingerDescription.state
+            let directionHandAccepted = direction == .any ? true : hand.direction == direction
             let directionAccepted = fingerDescription.direction == .any ? true : finger.direction == fingerDescription.direction
 
-            return curlnessAccepted && stateAccepted && directionAccepted
+            return curlnessAccepted && stateAccepted && directionAccepted && directionHandAccepted
         }
         
         let event: HandSuiteTools.HandEvent
