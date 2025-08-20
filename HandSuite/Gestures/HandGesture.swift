@@ -9,18 +9,16 @@ import SwiftUI
 
 public extension HandSuiteTools {
     @Observable
-    class HandGesture: HandSuiteTools.GestureScheme {        
-        public let chirality:  HandSuiteTools.Chirality
+    class HandGesture: HandSuiteTools.GestureScheme {
+        public let chirality: HandSuiteTools.Chirality
         public let direction: HandSuiteTools.Direction
         public let description: HandSuiteTools.GestureDescription
-
         public var recognitionEvents: HandSuiteTools.HandsEvents
-        
+
         @MainActor
         public init(
             chirality: HandSuiteTools.Chirality = .either,
             direction: HandSuiteTools.Direction = .any,
-            
             description: HandSuiteTools.GestureDescription
         ) {
             self.chirality = chirality

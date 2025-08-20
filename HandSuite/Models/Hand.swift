@@ -75,7 +75,7 @@ public final class Hand: @unchecked Sendable {
     func getFinger(named name: Hand.Finger.Name) -> Finger {
         return self.fingers[name]!
     }
-    
+
     func getPalmDirection() -> HandSuiteTools.Direction {
         guard let indexBase = joints[.indexFingerMetacarpal]?.getCurrentPosition(),
               let ringBase = joints[.ringFingerMetacarpal]?.getCurrentPosition(),
@@ -85,23 +85,18 @@ public final class Hand: @unchecked Sendable {
 
         let vectorA = ringBase - indexBase
         let vectorB = littleBase - ringBase
-        
         let normal = simd_normalize(simd_cross(vectorB, vectorA))
         let finalNormal = (chirality == .right) ? normal : -normal
-        
-        let cameraForward = simd_float3(0, 0, -1) // front
-        let worldUp = simd_float3(0, 1, 0)        // up
-        let cameraRight = simd_float3(1, 0, 0)    // right
-        
+        let cameraForward = simd_float3(0, 0, -1)
+        let worldUp = simd_float3(0, 1, 0)
+        let cameraRight = simd_float3(1, 0, 0)
         let dotForward = simd_dot(finalNormal, cameraForward)
         let dotUp = simd_dot(finalNormal, worldUp)
         let dotRight = simd_dot(finalNormal, cameraRight)
-        
         let absForward = abs(dotForward)
         let absUp = abs(dotUp)
         let absRight = abs(dotRight)
-        
-        
+
         if absForward >= 0.45 {
             return dotForward > 0 ? .back : .front
         } else if absUp >= absRight {
@@ -109,7 +104,7 @@ public final class Hand: @unchecked Sendable {
         } else if absRight >= absUp {
             return dotRight > 0 ? .left : .right
         }
-        
+
         return .any
     }
 }
