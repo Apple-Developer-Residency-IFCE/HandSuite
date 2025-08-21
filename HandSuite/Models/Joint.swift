@@ -13,7 +13,6 @@ public extension Hand {
     final class Joint: @unchecked Sendable {
         public let name: Hand.Joint.Name
         public let skeleton: HandSkeleton.JointName
-        
         private var currentPosition: SIMD3<Float>?
 
         @MainActor public private(set) var model: ModelEntity?
@@ -40,7 +39,7 @@ public extension Hand {
             self.model?.transform = transform
             self.currentPosition = transform.translation
         }
-        
+
         public func getCurrentPosition() -> SIMD3<Float>? {
             return currentPosition
         }

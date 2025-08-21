@@ -19,7 +19,7 @@ public extension HandSuiteTools {
 
         var leftEvent: HandSuiteTools.HandEvent? { get }
         var rightEvent: HandSuiteTools.HandEvent? { get }
-        
+
         func recognize(in hand: Hand) async
     }
 }
@@ -40,35 +40,35 @@ public extension HandSuiteTools.GestureScheme {
     }
 
     func recognize(in hand: Hand) {
-        guard case .hand(let fingers, let jointComparisons) = description else { return }
+        guard case .hand(let direction, let fingers, let jointComparisons) = description else { return }
 
         let wasRecognized = fingers.allSatisfy { fingerDescription in
             let finger = hand.getFinger(named: fingerDescription.name)
-
-            let curlnessAccepted = fingerDescription.state == .straight ? true : finger.curlness >=  fingerDescription.curlness
+            let curlnessAccepted = fingerDescription.state == .straight ? true : finger.curlness >= fingerDescription.curlness
             let stateAccepted = fingerDescription.state == .neutral ? true : finger.state == fingerDescription.state
+            let directionHandAccepted = direction == .any ? true : hand.direction == direction
             let directionAccepted = fingerDescription.direction == .any ? true : finger.direction == fingerDescription.direction
 
-            return curlnessAccepted && stateAccepted && directionAccepted
+            return curlnessAccepted && stateAccepted && directionAccepted && directionHandAccepted
         }
-        
+
         let event: HandSuiteTools.HandEvent
 
         if !jointComparisons.isEmpty {
             let areJointComparisonsValid = jointComparisons.allSatisfy { jointComparison in
                 let firstFinger = hand.getFinger(named: jointComparison.firstFinger)
                 let secondFinger = hand.getFinger(named: jointComparison.secondFinger)
-                
+
                 let firstJoint = firstFinger.getJoint(named: jointComparison.firstJoint)
                 let secondJoint = secondFinger.getJoint(named: jointComparison.secondJoint)
-                
+
                 guard let firstJointPosition = firstJoint?.getCurrentPosition(),
                       let secondJointPosition = secondJoint?.getCurrentPosition() else {
                     return false
                 }
-                
+
                 let calculatedDistance = firstJointPosition.distance(to: secondJointPosition)
-                
+
                 switch jointComparison.constraint {
                 case .greaterThanOrEqualTo(let distance):
                     return calculatedDistance >= distance
@@ -80,7 +80,7 @@ public extension HandSuiteTools.GestureScheme {
         } else {
             event = HandSuiteTools.HandEvent(wasRecognized: wasRecognized, hand: hand)
         }
-        
+
         if hand.chirality == .left {
             self.recognitionEvents.leftHand = event
         }

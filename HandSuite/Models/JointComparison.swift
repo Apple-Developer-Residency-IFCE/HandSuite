@@ -9,12 +9,10 @@ public extension HandSuiteTools {
     struct JointComparison {
         public let firstFinger: Hand.Finger.Name
         public let firstJoint: Hand.Joint.Name
-        
         public let secondFinger: Hand.Finger.Name
         public let secondJoint: Hand.Joint.Name
-        
         public let constraint: HandSuiteTools.JointDistanceConstraint
-        
+
         public init(firstFinger: Hand.Finger.Name,
                     firstJoint: Hand.Joint.Name,
                     secondFinger: Hand.Finger.Name,

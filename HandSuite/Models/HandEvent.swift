@@ -12,7 +12,6 @@ public extension HandSuiteTools {
     struct HandEvent {
         public let wasRecognized: Bool
         public let hand: Hand
-
         public var anchor: HandAnchor? { hand.currentAnchor }
     }
 

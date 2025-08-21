@@ -14,26 +14,26 @@ public extension HandSuiteTools {
     final class Tracker: @unchecked Sendable {
         @ObservationIgnored private let session: ARKitSession
         @ObservationIgnored private let provider: HandTrackingProvider
-        
+
         @MainActor private(set) var latestHandTracking: HandSuiteTools.HandsEvents = .init()
         @MainActor @ObservationIgnored private var gestures: [any HandSuiteTools.GestureScheme] = []
-        
+
         public let leftHand = Hand(chirality: .left)
         public let rightHand = Hand(chirality: .right)
-        
+
         public init(session: ARKitSession = .init(),
-             provider: HandTrackingProvider = .init()) {
+                    provider: HandTrackingProvider = .init()) {
             self.session = session
             self.provider = provider
         }
-        
+
         public func requestAuthorization() async {
             _ = await session.requestAuthorization(for: [.handTracking])
         }
 
         public func track() async {
             guard HandTrackingProvider.isSupported else { return }
-            
+
             do {
                 try await session.run([provider])
                 for await update in provider.anchorUpdates {
@@ -42,7 +42,6 @@ public extension HandSuiteTools {
             } catch {
                 print("Error starting hand tracking: \(error)")
             }
-            
         }
 
         private func handle(_ update: AnchorUpdate<HandAnchor>) async {
@@ -50,7 +49,7 @@ public extension HandSuiteTools {
             case .updated:
                 let anchor = update.anchor
                 guard anchor.isTracked else { return }
-                
+
                 if anchor.chirality == .left {
                     await self.leftHand.update(using: anchor)
                 } else {
@@ -71,7 +70,7 @@ public extension HandSuiteTools {
         public func install(gesture: any HandSuiteTools.GestureScheme) {
             self.gestures.append(gesture)
         }
-        
+
         @MainActor
         public func remove(gesture: any HandSuiteTools.GestureScheme) {
             self.gestures.removeAll { $0 === gesture }
@@ -81,16 +80,16 @@ public extension HandSuiteTools {
         public func processGestures() {
             for gesture in gestures {
                 if gesture.chirality == .left {
-                    Task { gesture.recognize(in: self.leftHand) }
+                    gesture.recognize(in: self.leftHand)
                 }
 
                 if gesture.chirality == .right {
-                    Task { gesture.recognize(in: self.rightHand) }
+                    gesture.recognize(in: self.rightHand)
                 }
 
                 if gesture.chirality == .either {
-                    Task { gesture.recognize(in: self.leftHand) }
-                    Task { gesture.recognize(in: self.rightHand) }
+                    gesture.recognize(in: self.leftHand)
+                    gesture.recognize(in: self.rightHand)
                 }
             }
         }
