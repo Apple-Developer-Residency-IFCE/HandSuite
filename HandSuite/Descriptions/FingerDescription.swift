@@ -14,10 +14,11 @@ public extension HandSuiteTools {
         public let state: HandSuiteTools.State
         public let direction: HandSuiteTools.Direction
 
-        public init(name: Hand.Finger.Name,
-             curlness: Float = 0.0,
-             state: HandSuiteTools.State = .neutral,
-             direction: HandSuiteTools.Direction = .any) {
+        public init(
+            name: Hand.Finger.Name,
+            curlness: Float = 0.0,
+            state: HandSuiteTools.State = .neutral,
+            direction: HandSuiteTools.Direction = .any) {
             self.name = name
             self.curlness = curlness
             self.state = state

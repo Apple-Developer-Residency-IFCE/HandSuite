@@ -20,6 +20,7 @@ public final class Hand: @unchecked Sendable {
     public private(set) var ringFinger: Hand.Finger?
     public private(set) var littleFinger: Hand.Finger?
 
+    public private(set) var direction: HandSuiteTools.Direction = .any
     public private(set) var fingers: [Hand.Finger.Name: Finger] = [:]
     public private(set) var joints: [HandSkeleton.JointName: Hand.Joint] = [:]
 
@@ -68,9 +69,42 @@ public final class Hand: @unchecked Sendable {
         for (_, finger) in fingers {
             await finger.update(using: anchor)
         }
+        self.direction = getPalmDirection()
     }
 
     func getFinger(named name: Hand.Finger.Name) -> Finger {
         return self.fingers[name]!
+    }
+
+    func getPalmDirection() -> HandSuiteTools.Direction {
+        guard let indexBase = joints[.indexFingerMetacarpal]?.getCurrentPosition(),
+              let ringBase = joints[.ringFingerMetacarpal]?.getCurrentPosition(),
+              let littleBase = joints[.littleFingerMetacarpal]?.getCurrentPosition() else {
+            return .any
+        }
+
+        let vectorA = ringBase - indexBase
+        let vectorB = littleBase - ringBase
+        let normal = simd_normalize(simd_cross(vectorB, vectorA))
+        let finalNormal = (chirality == .right) ? normal : -normal
+        let cameraForward = simd_float3(0, 0, -1)
+        let worldUp = simd_float3(0, 1, 0)
+        let cameraRight = simd_float3(1, 0, 0)
+        let dotForward = simd_dot(finalNormal, cameraForward)
+        let dotUp = simd_dot(finalNormal, worldUp)
+        let dotRight = simd_dot(finalNormal, cameraRight)
+        let absForward = abs(dotForward)
+        let absUp = abs(dotUp)
+        let absRight = abs(dotRight)
+
+        if absForward >= 0.45 {
+            return dotForward > 0 ? .back : .front
+        } else if absUp >= absRight {
+            return dotUp > 0 ? .down : .up
+        } else if absRight >= absUp {
+            return dotRight > 0 ? .left : .right
+        }
+
+        return .any
     }
 }
