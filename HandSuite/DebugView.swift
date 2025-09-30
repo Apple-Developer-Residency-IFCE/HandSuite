@@ -9,44 +9,56 @@ struct DebugView: View {
 
     @Binding var xAxis: Double
     @Binding var yAxis: Double
+    
+    @Binding var showSettings: Bool
 
     var body: some View {
-        VStack(spacing: 16) {
-            HStack {
-                Text("xAxis: \(xAxis, specifier: "%.1f")")
-                Text("yAxis: \(yAxis, specifier: "%.1f")")
+            VStack(spacing: 16) {
+                HStack {
+                    Button {
+                        showSettings.toggle()
+                        } label: {
+                            Label("Setting", systemImage: "gear")
+                                .labelStyle(.iconOnly)
+                        }
+                        Text("Debug View")
+                }
+                HStack {
+                    Text("xAxis: \(xAxis, specifier: "%.1f")")
+                    Text("yAxis: \(yAxis, specifier: "%.1f")")
+                }
+
+                HStack(spacing: 20) {
+                    table(title: "Left Hand", rows: [
+                        ("Pinky", tracker.leftHand.littleFinger),
+                        ("Ring", tracker.leftHand.ringFinger),
+                        ("Middle", tracker.leftHand.middleFinger),
+                        ("Index", tracker.leftHand.indexFinger),
+                        ("Thumb", tracker.leftHand.thumb)
+                    ])
+
+                    table(title: "Right Hand", rows: [
+                        ("Pinky", tracker.rightHand.littleFinger),
+                        ("Ring", tracker.rightHand.ringFinger),
+                        ("Middle", tracker.rightHand.middleFinger),
+                        ("Index", tracker.rightHand.indexFinger),
+                        ("Thumb", tracker.rightHand.thumb)
+                    ])
+                }
+
+                Divider()
+
+                HStack(spacing: 12) {
+                    Text("Left Dir: \(String(describing: tracker.leftHand.direction))")
+                    Text("Right Dir: \(String(describing: tracker.rightHand.direction))")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
-
-            HStack(spacing: 20) {
-                table(title: "Left Hand", rows: [
-                    ("Pinky", tracker.leftHand.littleFinger),
-                    ("Ring", tracker.leftHand.ringFinger),
-                    ("Middle", tracker.leftHand.middleFinger),
-                    ("Index", tracker.leftHand.indexFinger),
-                    ("Thumb", tracker.leftHand.thumb)
-                ])
-
-                table(title: "Right Hand", rows: [
-                    ("Pinky", tracker.rightHand.littleFinger),
-                    ("Ring", tracker.rightHand.ringFinger),
-                    ("Middle", tracker.rightHand.middleFinger),
-                    ("Index", tracker.rightHand.indexFinger),
-                    ("Thumb", tracker.rightHand.thumb)
-                ])
-            }
-
-            Divider()
-
-            HStack(spacing: 12) {
-                Text("Left Dir: \(String(describing: tracker.leftHand.direction))")
-                Text("Right Dir: \(String(describing: tracker.rightHand.direction))")
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            //.padding(16)
+            //.background(RoundedRectangle(cornerRadius: 12).stroke(.separator, lineWidth: 1))
+            .font(.system(.body, design: .monospaced))
         }
-        .padding(16)
-        .background(RoundedRectangle(cornerRadius: 12).stroke(.separator, lineWidth: 1))
-        .font(.system(.body, design: .monospaced))
     }
 
     @ViewBuilder private func table(title: String, rows: [(String, Hand.Finger?)]) -> some View {
@@ -87,5 +99,4 @@ struct DebugView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 2)
     }
-}
 
