@@ -6,12 +6,12 @@ struct DebugView: View {
     let id: Int
     let gestureModel: GestureModel
     @Environment(HandSuiteTools.Tracker.self) private var tracker
-
+    
     @Binding var xAxis: Double
     @Binding var yAxis: Double
-
+    
     @Binding var showSettings: Bool
-
+    
     var body: some View {
         VStack(spacing: 16) {
             HStack {
@@ -26,8 +26,9 @@ struct DebugView: View {
             .overlay {
                 Text("Debug View")
                     .allowsHitTesting(false)
+                    .font(.title2)
             }
-
+            
             HStack(spacing: 20) {
                 table(
                     title: "Left Hand",
@@ -37,9 +38,10 @@ struct DebugView: View {
                         ("Middle", tracker.leftHand.middleFinger),
                         ("Index", tracker.leftHand.indexFinger),
                         ("Thumb", tracker.leftHand.thumb),
-                    ]
+                    ],
+                    tracker: tracker.leftHand.direction
                 )
-
+                
                 table(
                     title: "Right Hand",
                     rows: [
@@ -48,22 +50,11 @@ struct DebugView: View {
                         ("Middle", tracker.rightHand.middleFinger),
                         ("Index", tracker.rightHand.indexFinger),
                         ("Thumb", tracker.rightHand.thumb),
-                    ]
+                    ],
+                    tracker: tracker.leftHand.direction
                 )
             }
-
             Divider()
-
-            HStack(spacing: 12) {
-                Text(
-                    "Left Dir: \(String(describing: tracker.leftHand.direction))"
-                )
-                Text(
-                    "Right Dir: \(String(describing: tracker.rightHand.direction))"
-                )
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
         }
         //.padding(16)
         //.background(RoundedRectangle(cornerRadius: 12).stroke(.separator, lineWidth: 1))
@@ -71,11 +62,15 @@ struct DebugView: View {
     }
 }
 
-@ViewBuilder private func table(title: String, rows: [(String, Hand.Finger?)])
-    -> some View
+@ViewBuilder private func table(title: String, rows: [(String, Hand.Finger?)], tracker: HandSuiteTools.Direction)
+-> some View
 {
     VStack(spacing: 0) {
-        Text(title).font(.largeTitle).padding(.bottom, 4)
+        HStack{
+            Text(title).font(.title3).padding(.bottom, 4)
+            Text("Direction: \(String(describing: tracker))").font(.caption)
+        }
+        
         Divider()
         Grid(horizontalSpacing: 12, verticalSpacing: 4) {
             GridRow {
@@ -84,7 +79,7 @@ struct DebugView: View {
                 header("Direction")
             }
             Divider().gridCellUnsizedAxes([.horizontal, .vertical])
-
+            
             ForEach(rows, id: \.0) { name, finger in
                 GridRow {
                     cell(name)
