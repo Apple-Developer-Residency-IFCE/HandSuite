@@ -12,9 +12,9 @@ struct CustomDebugView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            AxisRow(title: "Debug Window Width", value: $xAxis, range: 47...100, step: 1)
-            AxisRow(title: "Debug Window Vertical Position", value: $yPositioning, range: 47...100, step: 1)
-            AxisRow(title: "Debug Window Horizontal Position", value: $xPositioning, range: 47...100, step: 1)
+            AxisRow(title: "Debug Window Width", value: $xAxis, range: 50...80, step: 1)
+            AxisRow(title: "Debug Window Vertical Position", value: $yPositioning, range: -1...1, step: 1)
+            AxisRow(title: "Debug Window Horizontal Position", value: $xPositioning, range: -1...1, step: 1)
 //          AxisRow(title: "yAxis", value: $yAxis, isEditing: $editingY, range: 0...100, step: 1)
         }
         .padding(8) 

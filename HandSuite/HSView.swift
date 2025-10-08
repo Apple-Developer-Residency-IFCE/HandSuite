@@ -9,19 +9,17 @@ struct HSView: View {
 
     @Binding var xAxis: Double
     @Binding var yAxis: Double
-    
-    @Binding var xPositioning: Double
-    @Binding var yPositioning: Double
+
+    @Binding var xPositioning: Double   // expected in [-1, 1]
+    @Binding var yPositioning: Double   // expected in [-1, 1]
 
     var make: (inout RealityViewContent) -> Void
     var update: (inout RealityViewContent) -> Void
 
     @Environment(HandSuiteTools.Tracker.self) private var tracker
 
-    // ⬇️ NEW: minimums for the attachment view
     private let minW: CGFloat = 160
     private let minH: CGFloat = 120
-    
     @State private var showSettings = false
 
     init(
@@ -49,19 +47,52 @@ struct HSView: View {
             if isDebugModeEnable { tracker.addToContent(content) }
             make(&content)
 
-            if isDebugModeEnable, let hud = attachments.entity(for: "debugHUD") {
-                hud.components.set(BillboardComponent())
-                hud.position = [0, 0.10, -0.9]
-                let headAnchor = AnchorEntity(.head)
-                headAnchor.addChild(hud)
-                content.add(headAnchor)
+            // Create anchor + pivot ONCE and parent the HUD there
+            if isDebugModeEnable,
+               let hud = attachments.entity(for: "debugHUD")
+            {
+                var c = BillboardComponent()
+                c.blendFactor = 0
+                hud.components.set(c)
+
+                let head = AnchorEntity(.head)
+                let pivot = Entity()
+                pivot.name = "hudPivot"
+                
+//                pivot.components.set(ViewAttachmentComponent(rootView: <#T##View#>))
+
+                head.addChild(pivot)
+                pivot.addChild(hud)          // HUD stays at local [0,0,0]
+                content.add(head)
             }
-        } update: { content, _ in
+        } update: { content, attachments in
+            // Move the pivot EVERY FRAME based on dynamic x/y
+            guard isDebugModeEnable,
+                  let hud = attachments.entity(for: "debugHUD"),
+                  let pivot = hud.parent      // <- the pivot we created
+            else {
+                update(&content)
+                return
+            }
+
+            @inline(__always)
+            func clamp(_ v: Float, _ a: Float, _ b: Float) -> Float { min(max(v, a), b) }
+
+            let nx = clamp(Float(xPositioning), -1.5, 1.5)   // -1 left … +1 right
+            let ny = clamp(Float(yPositioning), -1.5, 1.5)   // -1 down … +1 up (invert if needed)
+
+            // Tune these (meters relative to head)
+            let maxX: Float = 0.15
+            let maxY: Float = 0.18
+            let baseZ: Float = -0.40
+
+            pivot.position = SIMD3<Float>(nx * maxX, ny * maxY, baseZ)
+
             update(&content)
         } attachments: {
             if isDebugModeEnable {
                 Attachment(id: "debugHUD") {
-                    HStack{
+                    HStack {
                         DebugView(
                             id: 0,
                             gestureModel: gestureModel,
@@ -73,20 +104,19 @@ struct HSView: View {
                         .background(.thinMaterial)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .shadow(radius: 8)
-                        // ⬇️ CHANGED: clamp to minimums (and make size non-negative)
                         .frame(
-                            width:  max(CGFloat(abs(xAxis)) * 60 / 5, minW),   // = max(|x|*12, 160)
-                            height: max(CGFloat(abs(yAxis)) * 35 / 5, minH),   // = max(|y|*7, 120)
+                            width: max(CGFloat(abs(xAxis)) * 12, minW),
+                            height: max(CGFloat(abs(yAxis)) * 8,  minH)
                         )
-                        if showSettings {                        // ⬅️ conditionally show
-                                                    CustomDebugView(
-                                                        xAxis: $xAxis,
-                                                        xPositioning: $xPositioning,
-                                                        yPositioning: $yPositioning
-                                                    )
-                                                }
+
+                        if showSettings {
+                            CustomDebugView(
+                                xAxis: $xAxis,
+                                xPositioning: $xPositioning,
+                                yPositioning: $yPositioning
+                            )
+                        }
                     }
-                    
                 }
             }
         }
