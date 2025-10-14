@@ -18,8 +18,8 @@ struct HSView: View {
 
     @Environment(HandSuiteTools.Tracker.self) private var tracker
 
-    private let minW: CGFloat = 560
-    private let minH: CGFloat = 420
+    private let minW: CGFloat = 480
+    private let minH: CGFloat = 360
 
     init(
         isDebugModeEnable: Bool = false,
@@ -54,7 +54,6 @@ struct HSView: View {
             }
 
         } update: { content, attachments in
-            // MARK: - Update phase
             guard isDebugModeEnable,
                   let hud = attachments.entity(for: "debugHUD"),
                   let pivot = hud.parent
@@ -97,13 +96,11 @@ struct HSView: View {
                             CustomDebugView(
                                 xAxis: $xAxis,
                                 xPositioning: $xPositioning,
-                                yPositioning: $yPositioning
+                                yPositioning: $yPositioning,
+                                onClose: { showSettings = false }
                             )
                             .frame(width: max(minW, 200), height: max(minH, 200))
-                            .compositingGroup()
-                            .contentShape(Rectangle())
                             .padding(40)
-                            .allowsHitTesting(true)
                             .transition(.move(edge: .top).combined(with: .opacity))
                         }
                     }
