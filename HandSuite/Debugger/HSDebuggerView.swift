@@ -1,114 +1,101 @@
-import ARKit
-import HandSuite
-import RealityKit
+import Observation
 import SwiftUI
 
-struct HSView: View {
-    let isDebugModeEnable: Bool
-    //let gestureModel: GestureModel
+public struct HSDebuggerView: View {
+    private let id: UUID = UUID()
 
-    @State private var xAxis: Double = 30
-    @State private var yAxis: Double = 30
-    @State private var xPositioning: Double = 0.1
-    @State private var yPositioning: Double = 0.1
-    @State private var showSettings = false
+    let tracker: HandSuiteTools.Tracker
 
-    var make: (inout RealityViewContent) -> Void
-    var update: (inout RealityViewContent) -> Void
+    @State private var showSettings: Bool = false
+    @State private var xPosition: Double = 0
+    @State private var yPosition: Double = 0
+    @State private var size: CGSize = .zero
 
-    @Environment(HandSuiteTools.Tracker.self) private var tracker
-
-    private let minW: CGFloat = 480
-    private let minH: CGFloat = 360
-
-    init(
-        isDebugModeEnable: Bool = false,
-        //gestureModel: GestureModel,
-        make: @escaping (inout RealityViewContent) -> Void,
-        update: @escaping (inout RealityViewContent) -> Void = { _ in }
-    ) {
-        self.isDebugModeEnable = isDebugModeEnable
-        //self.gestureModel = gestureModel
-        self.make = make
-        self.update = update
+    public init(tracker: HandSuiteTools.Tracker) {
+        self.tracker = tracker
     }
 
-    var body: some View {
-        RealityView { content in
-            if isDebugModeEnable { tracker.addToContent(content) }
-            make(&content)
+    public var body: some View {
+        ZStack {
+            VStack(spacing: 16) {
+                header
+                
+                Divider()
+                
+                HStack(spacing: 20) {
+                    DebuggerTable(hand: tracker.leftHand)
+                    Divider()
+                    DebuggerTable(hand: tracker.rightHand)
+                }
+            }
+            .font(.system(.body, design: .monospaced))
+            .padding(16)
+            .glassBackgroundEffect()
+            .frame(maxWidth: 480, maxHeight: 280)
+            .onGeometryChange(for: CGSize.self, of: { proxy in
+                proxy.size
+            }, action: { newSize in
+                size = newSize
+            })
 
-            guard isDebugModeEnable else { return }
-            
-            let hud = Entity()
-            hud.name = "debugHUD"
+            if showSettings {
+                controls
+            }
+        }
+    }
 
-            var billboard = BillboardComponent()
-            billboard.blendFactor = 0
-            hud.components.set(billboard)
-
-            hud.components.set(
-                ViewAttachmentComponent(content: {
-                    ZStack {
-                        DebugView(
-                            id: 0,
-                            //gestureModel: gestureModel,
-                            xAxis: $xAxis,
-                            yAxis: $yAxis,
-                            showSettings: $showSettings
-                        )
-                        .padding(8)
-                        .background(.thinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .shadow(radius: 8)
-                        .frame(width: max(minW, 200), height: max(minH, 200))
-
-                        if showSettings {
-                            CustomDebugView(
-                                xAxis: $xAxis,
-                                xPositioning: $xPositioning,
-                                yPositioning: $yPositioning,
-                                onClose: { showSettings = false }
-                            )
-                            .frame(width: max(minW, 200), height: max(minH, 200))
-                            .padding(40)
-                            .transition(.move(edge: .top).combined(with: .opacity))
+    var header: some View {
+        VStack {
+            HStack {
+                ZStack {
+                    Text("Debugger")
+                        .font(.title3)
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            withAnimation {
+                                showSettings.toggle()
+                            }
+                        } label: {
+                            Label("Setting", systemImage: "gear")
+                                .labelStyle(.iconOnly)
                         }
                     }
-                    .allowsHitTesting(true)
-                    .clipped(antialiased: false)
-                })
-            )
-
-            let head = AnchorEntity(.head)
-            let pivot = Entity()
-            pivot.name = "hudPivot"
-            head.addChild(pivot)
-            pivot.addChild(hud)
-            content.add(head)
-
-        } update: { content in
-            guard isDebugModeEnable,
-                  let pivot = content.entities.first(where: { $0.name == "hudPivot" })
-            else {
-                update(&content)
-                return
+                }
             }
+        }
+    }
 
-            @inline(__always)
-            func clamp(_ v: Float, _ a: Float, _ b: Float) -> Float { min(max(v, a), b) }
-
-            let nx = clamp(Float(xPositioning), -1.5, 1.5)
-            let ny = clamp(Float(yPositioning), -1.5, 1.5)
-
-            let maxX: Float = 0.15
-            let maxY: Float = 0.18
-            let baseZ: Float = -0.40
-
-            pivot.position = SIMD3<Float>(nx * maxX, ny * maxY, baseZ)
-
-            update(&content)
+    var controls: some View {
+        VStack {
+            DebuggerButton(systemImage: "chevron.up") {
+                yPosition += 0.1
+            }
+            
+            HStack {
+                DebuggerButton(systemImage: "chevron.left") {
+                    xPosition -= 0.1
+                }
+                
+                Spacer()
+                    .frame(width: size.width, height: size.height)
+                    .padding(8)
+                
+                DebuggerButton(systemImage: "chevron.right") {
+                    xPosition += 0.1
+                }
+            }
+            
+            DebuggerButton(systemImage: "chevron.down") {
+                yPosition -= 0.1
+            }
         }
     }
 }
+
+#Preview {
+    HSDebuggerView(tracker: .init())
+}
+
 

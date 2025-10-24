@@ -1,9 +1,12 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
-// swift-module-flags: -target x86_64-apple-xros1.3-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name HandSuite
+// swift-compiler-version: Apple Swift version 6.2 effective-5.10 (swiftlang-6.2.0.19.9 clang-1700.3.19.1)
+// swift-module-flags: -target x86_64-apple-xros26.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name HandSuite
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2
 import ARKit
+import Combine
 import Foundation
 @_exported import HandSuite
+import Observation
 import RealityKit
 import Swift
 import SwiftUI
@@ -11,6 +14,23 @@ import _Concurrency
 import _RealityKit_SwiftUI
 import _StringProcessing
 import _SwiftConcurrencyShims
+
+
+@_Concurrency.MainActor @preconcurrency public struct HSDebuggerRealityView : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public init(tracker: HandSuite.HandSuiteTools.Tracker, isDebugModeEnable: SwiftUICore.Binding<Swift.Bool>, make: @escaping (inout _RealityKit_SwiftUI.RealityViewContent) -> Swift.Void, update: @escaping (inout _RealityKit_SwiftUI.RealityViewContent) -> Swift.Void = { _ in })
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s9HandSuite21HSDebuggerRealityViewV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct HSDebuggerView : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public init(tracker: HandSuite.HandSuiteTools.Tracker)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s9HandSuite14HSDebuggerViewV4bodyQrvp", 0) __
+}
+
 extension HandSuite.HandSuiteTools {
   public struct FingerDescription {
     public let name: HandSuite.Hand.Finger.Name
@@ -34,23 +54,25 @@ extension HandSuite.HandSuiteTools {
   }
 }
 extension HandSuite.HandSuiteTools {
-  public enum Chirality : Swift.Int, Swift.CaseIterable {
+  public enum Chirality : Swift.String, Swift.CaseIterable {
     case either
     case left
     case right
-    public init?(rawValue: Swift.Int)
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
     public typealias AllCases = [HandSuite.HandSuiteTools.Chirality]
-    public typealias RawValue = Swift.Int
+    public typealias RawValue = Swift.String
     nonisolated public static var allCases: [HandSuite.HandSuiteTools.Chirality] {
       get
     }
-    public var rawValue: Swift.Int {
+    public var rawValue: Swift.String {
       get
     }
   }
 }
 extension HandSuite.HandSuiteTools {
-  public enum Direction : Swift.Int, Swift.CaseIterable {
+  public enum Direction : Swift.String, Swift.CaseIterable {
     case any
     case up
     case down
@@ -58,20 +80,22 @@ extension HandSuite.HandSuiteTools {
     case back
     case left
     case right
-    public init?(rawValue: Swift.Int)
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
     public typealias AllCases = [HandSuite.HandSuiteTools.Direction]
-    public typealias RawValue = Swift.Int
+    public typealias RawValue = Swift.String
     nonisolated public static var allCases: [HandSuite.HandSuiteTools.Direction] {
       get
     }
-    public var rawValue: Swift.Int {
+    public var rawValue: Swift.String {
       get
     }
   }
 }
 extension HandSuite.HandSuiteTools {
   public enum GestureDescription {
-    case hand(Swift.Set<HandSuite.HandSuiteTools.FingerDescription>, [HandSuite.HandSuiteTools.JointComparison])
+    case hand(HandSuite.HandSuiteTools.Direction, Swift.Set<HandSuite.HandSuiteTools.FingerDescription>, [HandSuite.HandSuiteTools.JointComparison])
     case finger(HandSuite.HandSuiteTools.FingerDescription)
     case steps([HandSuite.HandSuiteTools.GestureStepDescription])
   }
@@ -83,17 +107,19 @@ extension HandSuite.HandSuiteTools {
   }
 }
 extension HandSuite.HandSuiteTools {
-  public enum State : Swift.Int, Swift.CaseIterable {
+  public enum State : Swift.String, Swift.CaseIterable {
     case neutral
     case straight
     case curl
-    public init?(rawValue: Swift.Int)
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
     public typealias AllCases = [HandSuite.HandSuiteTools.State]
-    public typealias RawValue = Swift.Int
+    public typealias RawValue = Swift.String
     nonisolated public static var allCases: [HandSuite.HandSuiteTools.State] {
       get
     }
-    public var rawValue: Swift.Int {
+    public var rawValue: Swift.String {
       get
     }
   }
@@ -124,14 +150,16 @@ extension HandSuite.HandSuiteTools {
     @objc deinit
   }
 }
-extension HandSuite.HandSuiteTools.HandGesture : Observation.Observable {
+extension HandSuite.HandSuiteTools.HandGesture : nonisolated Observation.Observable {
 }
 extension HandSuite.Hand {
   @_hasMissingDesignatedInitializers final public class Finger : @unchecked Swift.Sendable {
     final public let name: HandSuite.Hand.Finger.Name
+    #if compiler(>=5.3) && $NonescapableTypes
     weak final public var hand: HandSuite.Hand? {
       get
     }
+    #endif
     final public var direction: HandSuite.HandSuiteTools.Direction {
       get
     }
@@ -160,49 +188,66 @@ extension HandSuite.Hand {
       get
     }
     @_Concurrency.MainActor final public func update(using anchor: ARKit.HandAnchor) async
+    #if compiler(>=5.3) && $NonescapableTypes
     final public func getJoint(named name: HandSuite.Hand.Joint.Name) -> HandSuite.Hand.Joint?
+    #endif
     final public func getCurlness() async -> Swift.Float
     @objc deinit
   }
 }
 extension HandSuite.Hand.Finger {
-  public enum Name : Swift.Int, Swift.CaseIterable {
+  public enum Name : Swift.String, Swift.CaseIterable {
     case thumb
     case index
     case middle
     case ring
     case little
-    public init?(rawValue: Swift.Int)
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
     public typealias AllCases = [HandSuite.Hand.Finger.Name]
-    public typealias RawValue = Swift.Int
+    public typealias RawValue = Swift.String
     nonisolated public static var allCases: [HandSuite.Hand.Finger.Name] {
       get
     }
-    public var rawValue: Swift.Int {
+    public var rawValue: Swift.String {
       get
     }
   }
 }
-extension HandSuite.Hand.Finger : Observation.Observable {
+extension HandSuite.Hand.Finger : nonisolated Observation.Observable {
 }
 final public class Hand : @unchecked Swift.Sendable {
   final public let chirality: HandSuite.HandSuiteTools.Chirality
   final public var currentAnchor: ARKit.HandAnchor? {
     get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var thumb: HandSuite.Hand.Finger? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var indexFinger: HandSuite.Hand.Finger? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var middleFinger: HandSuite.Hand.Finger? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var ringFinger: HandSuite.Hand.Finger? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var littleFinger: HandSuite.Hand.Finger? {
+    get
+  }
+  #endif
+  final public var direction: HandSuite.HandSuiteTools.Direction {
     get
   }
   final public var fingers: [HandSuite.Hand.Finger.Name : HandSuite.Hand.Finger] {
@@ -214,15 +259,17 @@ final public class Hand : @unchecked Swift.Sendable {
   public init(chirality: HandSuite.HandSuiteTools.Chirality)
   @objc deinit
 }
-extension HandSuite.Hand : Observation.Observable {
+extension HandSuite.Hand : nonisolated Observation.Observable {
 }
 extension HandSuite.HandSuiteTools {
   public struct HandEvent {
     public let wasRecognized: Swift.Bool
     public let hand: HandSuite.Hand
+    #if compiler(>=5.3) && $NonescapableTypes
     public var anchor: ARKit.HandAnchor? {
       get
     }
+    #endif
   }
   public struct HandsEvents {
     public var leftHand: HandSuite.HandSuiteTools.HandEvent?
@@ -247,9 +294,13 @@ extension HandSuite.Hand {
       get
     }
     @_Concurrency.MainActor final public func setModel(_ model: RealityFoundation.ModelEntity)
+    #if compiler(>=5.3) && $NonescapableTypes
     @_Concurrency.MainActor final public func getModelTransform() -> RealityFoundation.Transform?
+    #endif
     @_Concurrency.MainActor final public func setModelTransform(_ transform: RealityFoundation.Transform)
+    #if compiler(>=5.3) && $NonescapableTypes
     final public func getCurrentPosition() -> Swift.SIMD3<Swift.Float>?
+    #endif
     @objc deinit
   }
 }
@@ -260,7 +311,9 @@ extension HandSuite.Hand.Joint {
     case metacarpal
     case knuckle
     case tip
+    #if compiler(>=5.3) && $NonescapableTypes
     public init?(rawValue: Swift.String)
+    #endif
     public typealias AllCases = [HandSuite.Hand.Joint.Name]
     public typealias RawValue = Swift.String
     nonisolated public static var allCases: [HandSuite.Hand.Joint.Name] {
@@ -288,18 +341,26 @@ extension HandSuite.HandSuiteTools {
     var description: HandSuite.HandSuiteTools.GestureDescription { get }
     var wasRecognized: Swift.Bool { get }
     var recognitionEvents: HandSuite.HandSuiteTools.HandsEvents { get set }
+    #if compiler(>=5.3) && $NonescapableTypes
     var leftEvent: HandSuite.HandSuiteTools.HandEvent? { get }
+    #endif
+    #if compiler(>=5.3) && $NonescapableTypes
     var rightEvent: HandSuite.HandSuiteTools.HandEvent? { get }
+    #endif
     func recognize(in hand: HandSuite.Hand) async
   }
 }
 extension HandSuite.HandSuiteTools.GestureScheme {
+  #if compiler(>=5.3) && $NonescapableTypes
   public var leftEvent: HandSuite.HandSuiteTools.HandEvent? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public var rightEvent: HandSuite.HandSuiteTools.HandEvent? {
     get
   }
+  #endif
   public var wasRecognized: Swift.Bool {
     get
   }
@@ -333,8 +394,10 @@ extension HandSuite.HandSuiteTools {
     @objc deinit
   }
 }
-extension HandSuite.HandSuiteTools.Tracker : Observation.Observable {
+extension HandSuite.HandSuiteTools.Tracker : nonisolated Observation.Observable {
 }
+extension HandSuite.HSDebuggerRealityView : Swift.Sendable {}
+extension HandSuite.HSDebuggerView : Swift.Sendable {}
 extension HandSuite.HandSuiteTools.Chirality : Swift.Equatable {}
 extension HandSuite.HandSuiteTools.Chirality : Swift.Hashable {}
 extension HandSuite.HandSuiteTools.Chirality : Swift.RawRepresentable {}

@@ -5,7 +5,6 @@
 //  Created by Narely Lima de Oliveira on 08/05/25.
 //
 import Foundation
-import HandSuite
 import Combine
 
 @MainActor

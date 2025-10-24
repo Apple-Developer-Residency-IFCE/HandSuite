@@ -8,7 +8,7 @@
 import Foundation
 
 public extension HandSuiteTools {
-    enum State: Int, CaseIterable {
+    enum State: String, CaseIterable {
         case neutral
         case straight
         case curl

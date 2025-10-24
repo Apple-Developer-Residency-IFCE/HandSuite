@@ -10,27 +10,27 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		AZ4zowTuBGhO6A9W8djhKuYjgig=
+		1PshouR4ITDpe59xxeTfZOzFP8c=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.abi.json</key>
 		<data>
-		qFsNhwKze2QvI6DwZlKtt/MbP/8=
+		iliAuyOf9cf2lAWURVLGa8ERj9c=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.private.swiftinterface</key>
 		<data>
-		t2KfMsOBxGZRszFb2VieynJ+qh4=
+		BovL8fWMHOBk3F0Gj/3keLGGdWk=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.swiftdoc</key>
 		<data>
-		Vzw4CEyIZt1Ka8MzStZng8PLbDI=
+		Mcuj050/1GpkjCy/fuYfobmGzZM=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.swiftinterface</key>
 		<data>
-		t2KfMsOBxGZRszFb2VieynJ+qh4=
+		BovL8fWMHOBk3F0Gj/3keLGGdWk=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.swiftmodule</key>
 		<data>
-		I8vduA2SyfSs/RWceQW0tY0fCok=
+		z5shbiisexZyccMuxkLrSZ3hD4I=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -41,10 +41,6 @@
 	<dict>
 		<key>Headers/HandSuite.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			RpNPHg8G8iZMhlDTKr9c+eNJ100=
-			</data>
 			<key>hash2</key>
 			<data>
 			NRPrztoRhyF/h8zS2ap3Fz39bvD/OkiaveiQYsWqDNg=
@@ -52,65 +48,41 @@
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.abi.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qFsNhwKze2QvI6DwZlKtt/MbP/8=
-			</data>
 			<key>hash2</key>
 			<data>
-			baCkifiT/fNX8dxWbV3NbYK7OhdAegzKsldyWwAQMX0=
+			2P1YikcZMFS3twzPytbaah7ss7QrthA1hxnH6ijZHuk=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.private.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			t2KfMsOBxGZRszFb2VieynJ+qh4=
-			</data>
 			<key>hash2</key>
 			<data>
-			KufTYnv8Gz4lqU3qV9I0f8t8H3sUpN+hqF5cbPnKtsE=
+			lUH1TZqxJLMo3YhpS39qekpqBGX+mwqIL+dTbaWtimI=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.swiftdoc</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Vzw4CEyIZt1Ka8MzStZng8PLbDI=
-			</data>
 			<key>hash2</key>
 			<data>
-			y9CZbgmMkMnLUZ5ajZN1h+X7E17rcv8oTmr3l3IuhXU=
+			V6tNQYwuocr2n3//Jf9Th6zpWMUUbWhTrGMPHgfQYEI=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			t2KfMsOBxGZRszFb2VieynJ+qh4=
-			</data>
 			<key>hash2</key>
 			<data>
-			KufTYnv8Gz4lqU3qV9I0f8t8H3sUpN+hqF5cbPnKtsE=
+			lUH1TZqxJLMo3YhpS39qekpqBGX+mwqIL+dTbaWtimI=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros.swiftmodule</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			I8vduA2SyfSs/RWceQW0tY0fCok=
-			</data>
 			<key>hash2</key>
 			<data>
-			T9gvA1x9GdFi79y2VCaf/ktTHeEZTnUPxhDfqEz72Tw=
+			wcM8m4Fcl9IQRjCRwSkw+iWV+PFlRZVoXI7Ht+RUAlY=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			RsR9IjTEhsPqE63v/r4/YkMOuPk=
-			</data>
 			<key>hash2</key>
 			<data>
 			DOQGNHK5r3jmgwKw0BXZO+4crJDs7rHBwU5CXCadFbY=
