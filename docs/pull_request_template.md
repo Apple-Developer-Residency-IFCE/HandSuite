@@ -1,27 +1,52 @@
-# [NB\-_issueNumber_] [Short Title](_issueURL_)
-- Closes #1 <!--change the number to your issue number-->
+## 🚀 Pull Request
 
-## Describe your changes:
-- Change 1; 
-- Change 2;
+**Title:** `[NB-_<issueNumber>] <Short Title>`  
+**Issue Link:** Closes #<issueNumber>
 
-## Checklist before requesting a review:
-- [ ] I have performed a self-review of my code;
-- [ ] I have written all tests needed;
-- [ ] I have run the code with the main repository and there is no errors on flows outside the scope of this PR;
-- [ ] If there is any PR-scoped error while running the code on the main repository, have you requested the PO to create a _fix_ issue?
-- [ ] If there were UI changes, have you validated the changes with a designer?
+---
 
-## Tests
-How have this been tested?
-<!--Ex: Unit testing, mannual testing, integration testing...-->
-- Unit testing;
+### ✅ Summary
+<!-- Provide a concise explanation of what this PR does and why. -->
+<!-- Example:
+Implements new authentication flow to support single-sign-on (SSO).
+-->
 
-## Observations
-<!--Delete this section if there is no observations-->
-- Observation 1;
-- Observation 2;
+---
 
-## Screenshots
-<!--Delete this section if there is no UI changes-->
-Add any screenshots if there was UI changes.
+### 🛠️ Changes
+<!-- List the key changes introduced by this PR. -->
+- Change 1
+- Change 2
+
+---
+
+### ✅ Review Checklist
+Before requesting a review, ensure:
+
+- [ ] Code self-review completed
+- [ ] All required tests implemented and passing
+- [ ] Application runs correctly with the main repository — no regressions outside this PR scope
+- [ ] (If applicable) Any PR-scoped issues found during integration were reported to the PO for a **fix issue**
+- [ ] (If applicable) UI changes validated with the Design team
+- [ ] Documentation updated (README, comments, API docs, etc., if needed)
+
+---
+
+### 🧪 Testing
+<!-- Describe how this was tested. Include steps if manual testing was done. -->
+- Unit tests
+- Integration tests
+- Manual testing
+- UI tests
+
+---
+
+### 📌 Additional Notes (Optional)
+<!-- Add any context reviewers should know: risks, pending improvements, limitations, feature flags, etc. -->
+- Note 1
+- Note 2
+
+---
+
+### 📸 Screenshots / Recordings (UI changes only)
+<!-- Attach screenshots, screen recordings, or gifs when helpful. -->
