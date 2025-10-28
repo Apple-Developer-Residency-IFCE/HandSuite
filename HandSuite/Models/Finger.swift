@@ -150,7 +150,7 @@ public extension Hand {
 }
 
 public extension Hand.Finger {
-    enum Name: Int, CaseIterable {
+    enum Name: String, CaseIterable {
         case thumb
         case index
         case middle

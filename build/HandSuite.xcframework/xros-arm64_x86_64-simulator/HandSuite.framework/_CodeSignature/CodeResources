@@ -10,47 +10,47 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		mWzr9D5NRkfrwg86a4KX/qlZ/nM=
+		3n1wnStAUPRTnm+jv721BXMSj/M=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.abi.json</key>
 		<data>
-		qFsNhwKze2QvI6DwZlKtt/MbP/8=
+		iliAuyOf9cf2lAWURVLGa8ERj9c=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.private.swiftinterface</key>
 		<data>
-		StWG4psp7YiexkGusHlLhD7GwrA=
+		9SDxItsoY1FgdLEDLJqhnSElmrI=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.swiftdoc</key>
 		<data>
-		TH91Xsr8RUE4icJym8d8keiAJ/4=
+		pggg74/A4nxiFphuqUvgyDgdbZ4=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.swiftinterface</key>
 		<data>
-		StWG4psp7YiexkGusHlLhD7GwrA=
+		9SDxItsoY1FgdLEDLJqhnSElmrI=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.swiftmodule</key>
 		<data>
-		ektWsJKP4obGg1MyWXb725uMONc=
+		1SNocAy3ULirYMlaAmX8uXDWqrY=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.abi.json</key>
 		<data>
-		qFsNhwKze2QvI6DwZlKtt/MbP/8=
+		iliAuyOf9cf2lAWURVLGa8ERj9c=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.private.swiftinterface</key>
 		<data>
-		an/rCQuBNTvpsxQC0ne08je/85s=
+		plGQz+YHAnc9t5gw51YYQOLT57U=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.swiftdoc</key>
 		<data>
-		2Tlsq+jYCiaySkd4aqvGJOzgKxw=
+		jhWuJRFMlZe+hnVbFzs3VH+p8Ag=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.swiftinterface</key>
 		<data>
-		an/rCQuBNTvpsxQC0ne08je/85s=
+		plGQz+YHAnc9t5gw51YYQOLT57U=
 		</data>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.swiftmodule</key>
 		<data>
-		jayjx/kDA6hB3ZqY/yD2305fSIs=
+		4yTk2+P0Aq5L/xaPvsXmutHWm74=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -61,10 +61,6 @@
 	<dict>
 		<key>Headers/HandSuite.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			RpNPHg8G8iZMhlDTKr9c+eNJ100=
-			</data>
 			<key>hash2</key>
 			<data>
 			NRPrztoRhyF/h8zS2ap3Fz39bvD/OkiaveiQYsWqDNg=
@@ -72,120 +68,76 @@
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.abi.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qFsNhwKze2QvI6DwZlKtt/MbP/8=
-			</data>
 			<key>hash2</key>
 			<data>
-			baCkifiT/fNX8dxWbV3NbYK7OhdAegzKsldyWwAQMX0=
+			2P1YikcZMFS3twzPytbaah7ss7QrthA1hxnH6ijZHuk=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.private.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			StWG4psp7YiexkGusHlLhD7GwrA=
-			</data>
 			<key>hash2</key>
 			<data>
-			Y14AtBzY6J985qjVogmZZ/GyXiGOiz9NDLir0v46VZI=
+			4p4qzk2FkEGjgIosifvyYpOJ0wpv6mRyTq/nomS8Oqs=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.swiftdoc</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			TH91Xsr8RUE4icJym8d8keiAJ/4=
-			</data>
 			<key>hash2</key>
 			<data>
-			tjMHcwhXheedc6GoVNicf4HdEK3tjNahBsqBBRdCs6o=
+			PlF3bBKOtx/ojJk0BsJb4ebC489wceaILE4HaqpcqCU=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			StWG4psp7YiexkGusHlLhD7GwrA=
-			</data>
 			<key>hash2</key>
 			<data>
-			Y14AtBzY6J985qjVogmZZ/GyXiGOiz9NDLir0v46VZI=
+			4p4qzk2FkEGjgIosifvyYpOJ0wpv6mRyTq/nomS8Oqs=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/arm64-apple-xros-simulator.swiftmodule</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ektWsJKP4obGg1MyWXb725uMONc=
-			</data>
 			<key>hash2</key>
 			<data>
-			Zd2gPWgi6txK2gUphPJz3VOwMEcS3yxuiv5n1OLCGT4=
+			HjsPf1J5kBDw5PlPRg6SvzoZoiMwY/QkCEwbIYUM4xk=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.abi.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qFsNhwKze2QvI6DwZlKtt/MbP/8=
-			</data>
 			<key>hash2</key>
 			<data>
-			baCkifiT/fNX8dxWbV3NbYK7OhdAegzKsldyWwAQMX0=
+			2P1YikcZMFS3twzPytbaah7ss7QrthA1hxnH6ijZHuk=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.private.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			an/rCQuBNTvpsxQC0ne08je/85s=
-			</data>
 			<key>hash2</key>
 			<data>
-			CTJ6HVXxZqk04ZVXYHv3+hapD4OvX3Sdy/HZST6CJwE=
+			8wufVPo81le/3yNJSR5orj0N1AIOBUZuw094Zh5dBnk=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.swiftdoc</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2Tlsq+jYCiaySkd4aqvGJOzgKxw=
-			</data>
 			<key>hash2</key>
 			<data>
-			+jpodaKvoi27/qD0cZacnp1gmHa0PSr89wEJ3iNbaf0=
+			JkTipZbnAn5lLe38djMTIdQxkGT2sQbvNu2lK5i1/r0=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			an/rCQuBNTvpsxQC0ne08je/85s=
-			</data>
 			<key>hash2</key>
 			<data>
-			CTJ6HVXxZqk04ZVXYHv3+hapD4OvX3Sdy/HZST6CJwE=
+			8wufVPo81le/3yNJSR5orj0N1AIOBUZuw094Zh5dBnk=
 			</data>
 		</dict>
 		<key>Modules/HandSuite.swiftmodule/x86_64-apple-xros-simulator.swiftmodule</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jayjx/kDA6hB3ZqY/yD2305fSIs=
-			</data>
 			<key>hash2</key>
 			<data>
-			lz7TZN8arCNgaiUK2DrEo0o3vmW9y35TXVjqT9iaV1I=
+			QlwtXqvxOswo4b2d6WtiXF6Ble8MSWQT50Fn3gukBgg=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			RsR9IjTEhsPqE63v/r4/YkMOuPk=
-			</data>
 			<key>hash2</key>
 			<data>
 			DOQGNHK5r3jmgwKw0BXZO+4crJDs7rHBwU5CXCadFbY=

@@ -8,7 +8,7 @@
 import Foundation
 
 public extension HandSuiteTools {
-    enum Direction: Int, CaseIterable {
+    enum Direction: String, CaseIterable {
         case any
         case up
         case down

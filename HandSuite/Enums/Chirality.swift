@@ -8,7 +8,7 @@
 import Foundation
 
 public extension HandSuiteTools {
-    enum Chirality: Int, CaseIterable {
+    enum Chirality: String, CaseIterable {
         case either
         case left
         case right
