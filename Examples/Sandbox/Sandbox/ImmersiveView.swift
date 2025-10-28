@@ -7,10 +7,10 @@ struct ImmersiveView: View {
     @Environment(HSController.self) var controller: HSController
 
     var body: some View {
-        HSDebuggerRealityView(controller: controller,
-                              isDebugModeEnable: $isDebugModeEnable) { content in
-            // Use content.add(_) if needed
-        }
+//        HSDebuggerRealityView(controller: controller,
+//                              isDebugModeEnable: $isDebugModeEnable) { content in
+//            // Use content.add(_) if needed
+//        }
     }
 }
 
