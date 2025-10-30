@@ -5,7 +5,7 @@ HandSuite is a Package for VisionPro, that allows the user to manipulate the Han
 
 # How to Install
 
-At this moment, HandSuite only works as a local Package. By this mean, you should:
+At this moment, HandSuite only supports SPM. By this mean, you should:
 
 - Clone the main branch: 
 ```
@@ -21,28 +21,6 @@ Here, you will know all files, objects, enums and structs available to be used i
 
 ## Sandbox
 The Sandbox is our sample file to show the usage of HandSuite. By default, it's a simple Immersive Enviroment App. And this lead us to the first major information about HandSuite: _The HandSuite Package must be used within a ImmersiveSpace._
-
-
-- ContentView: Theres no much thing happening here, besides the calling for the controller to start the Tracking - this process will be deepened further in this Documentation. But this is all your app need to have to start the usage of HandSuite.
-```
-import SwiftUI
-import RealityKit
-import HandSuite
-
-struct ContentView: View {
-    @Environment(HSController.self) var controller: HSController
-
-    var body: some View {
-        VStack {
-            ToggleImmersiveSpaceButton()
-        }
-        .padding()
-        .task {
-            await controller.requestAuthorization()
-        }
-    }
-}
-```
 
 - ImmersiveView: Here, the most important thing is the usage of HSDebuggerRealityView, a View that shows the developer what's the VisionPro is seeing in terms of Direction, Curlness, and Position of the Fingers and the Hand it self.
 ```
