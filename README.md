@@ -1,11 +1,11 @@
 # HandSuite - Apple Developer Residency
 
-HandSuite is a Swift package for **visionOS (Apple Vision Pro)** that allows developers to manipulate hand-tracking data provided by **RealityKit** and **ARKit**.  
-It expands Vision Pro’s gesture system, enabling the creation of **custom gestures** to interact and build immersive spatial experiences.
+HandSuite is a Swift package for visionOS (Apple Vision Pro) that allows developers to manipulate hand-tracking data provided by RealityKit and ARKit.  
+It expands Vision Pro’s gesture system, enabling the creation of custom gestures to interact and build immersive spatial experiences.
 
 ## How to Install
 
-HandSuite currently supports installation only via **Swift Package Manager (SPM)**.
+HandSuite currently supports installation only via Swift Package Manager (SPM).
 
 To install it:
 
@@ -16,8 +16,8 @@ To install it:
 
 It’s the same process used for other packages like **SwiftLint**.
 
-> **Note:** HandSuite is designed exclusively for **visionOS**.  
-> Running it on other devices or in the **Xcode Simulator** may cause errors or unexpected behavior.
+> Note: HandSuite is designed exclusively for visionOS.  
+> Running it on other devices or in the Xcode Simulator may cause errors or unexpected behavior.
 
 ## Documentation (In Progress)
 
@@ -27,12 +27,12 @@ The documentation is still under active development.
 
 ### Sandbox
 
-The **Sandbox** is a sample immersive environment demonstrating HandSuite’s usage.  
-The package must always be used within an **ImmersiveSpace**.
+The Sandbox is a sample immersive environment demonstrating HandSuite’s usage.  
+The package must always be used within an ImmersiveSpace.
 
 #### ImmersiveView
 
-The key view in the Sandbox is `HSDebuggerRealityView`, which displays what Vision Pro “sees” — including **hand direction**, **curlness**, and **finger positions**.
+The key view in the Sandbox is `HSDebuggerRealityView`, which displays what Vision Pro “sees” — including hand direction, curlness, and finger positions.
 
 ```swift
 struct ImmersiveView: View {
@@ -77,7 +77,7 @@ The HSHand class represents a human hand, provinding access to `Fingers`, `Joint
 - Calculates the palm direction (HSDirection).
 - Optionally adds 3D debug entities (like spheres) to visualize each joint.
 #### Inicialization:
-```
+```swift
 let leftHand = HSHand (chirality = .left)
 let rightHand = HSHand (chirality = .right)
 ```
@@ -85,7 +85,7 @@ let rightHand = HSHand (chirality = .right)
 
 - `addToContent(_:)`
 Adds each hand joint as a small 3D sphere to your RealityKit content for visualization.
-```
+```swift
 RealityView { content in
     leftHand.addToContet(content)
 }
@@ -93,7 +93,7 @@ RealityView { content in
 
 - `getFinger(name: HSFinger.Name) -> HSFinger`
 Returns a finger instance for inspection or custom gesture definition.
-```
+```swift
 RealityView { content in
     leftHand.getFinger(name: .thumb)
 }
@@ -101,7 +101,7 @@ RealityView { content in
 
 - `getPalmDirection() -> HSDirection`
 Calculates the direction the palm is facing, based on the `HSDirection` enum.
-```
+```swift
 let direction = leftHand.getPalmDirection()
 
 switch direction {
@@ -123,20 +123,19 @@ Each `HSFinger` belongs to a specific `HSHand`, allowing full-hand tracking and 
 - Updates 3D joint transforms from ARKit’s `HandAnchor`
 
 #### Inicialization:
-```
+```swift
 let finger = HSFinger(name: HSFinger.Name, hand: HSHand)
 ```
 #### Key Methods
-
  - `getCurlAmount()
 Asynchronously calculates how bent the finger is by comparing the angles between sequential joints.
-```
+```swift
 if let directionVector = indexFinger.calculateFingerDirection() {
     print("Finger direction vector:", directionVector)
 }
 ```
 #### Example usage
-```
+```swift
 // Inside a Hand Update Cycle
 Task {
     if let anchor = controller.latestHandTracking.rightAnchor {
@@ -150,9 +149,156 @@ Task {
 }
 
 ```
+### HSJoint
+The `HSJoint` class represents the anatomics subdivisions of each finger individually (e.g. metacarpal). 
+#### Responsabilities:
+- Return the 3D models for the Hand visualization.
+- Allow distance comparison.
 
+#### Inicialization:
+```swift
+let tipJoint = HSJoint(name: .tip, finger: indexFinger)
+```
+#### Key Methods
+
+ - update3DAsset()
+Assigns a custom 3D model (e.g., a small sphere) to represent this joint in RealityKit.
+```swift
+let sphere = ModelEntity(mesh: .generateSphere(radius: 0.005))
+tipJoint.update3DAsset(sphere)
+```
+#### Example usage
+```swift
+let indexFinger = HSFinger(name: .index, hand: leftHand)
+if let tip = indexFinger.joints[.tip] {
+    let sphere = ModelEntity(mesh: .generateSphere(radius: 0.005))
+    tip.update3DAsset(sphere)
+}
+```
+#### HSJointComparison
+The HSJointComparison struct is used to compare two joints — typically from two different fingers — based on a distance constraint.
+This enables simple, declarative gesture definitions (e.g., detecting a pinch between the thumb and index tip).
+#### Inicialization:
+```swift
+let pinchComparison = HSJointComparison(
+    firstFinger: .thumb,
+    firstJoint: .tip,
+    secondFinger: .index,
+    secondJoint: .tip,
+    constraint: .lessThanOrEqualTo(0.02)
+)
+```
+#### Example usage
+```swift
+let thumbToIndex = HSJointComparison(
+    firstFinger: .thumb,
+    firstJoint: .tip,
+    secondFinger: .index,
+    secondJoint: .tip,
+    constraint: .lessThanOrEqualTo(0.025)
+)
+// This can represent a "pinch" gesture trigger
+```
+### HSController
+The `HSController` class is the **core orchestrator** of HandSuite.  
+It manages **ARKit hand tracking sessions**, updates both hands in real-time, and handles the **gesture recognition pipeline**.
+#### Responsabilities
+- Initializes and runs **ARKit’s hand tracking session**
+- Provides synchronized updates for both `HSHand` instances (`leftHand` and `rightHand`)
+- Registers, removes, and processes custom gestures (`HSGestureScheme`)
+- Adds tracked hands into a `RealityView` for visualization or debugging
+
+#### Key Methods
+ - `requestAuthorization()`
+Requests user authorization for hand tracking.
+```swift
+Task {
+    await controller.requestAuthorization()
+}
+```
+ - `run()`
+Starts the ARKit hand tracking session and listens for continuous updates.
+This function must be called once, typically in .task or .onAppear.
+```swift
+Task {
+    await controller.run()
+}
+```
+- `addToContent(_:)`
+Adds both the left and right hand joint models to the RealityKit content.
+Useful for debugging or displaying hand skeletons in 3D space.
+```swift
+RealityView { content in
+    controller.addToContent(content)
+}
+```
+- `install(gesture:)`
+Registers a new gesture recognizer conforming to HSGestureScheme.
+```swift
+controller.install(gesture: PinchGesture())
+```
+- `install(gesture:)`
+Removes a previously installed gesture recognizer.
+```swift
+controller.remove(gesture: PinchGesture())
+```
+- `processGestures()`
+Evaluates all installed gestures against the current hand states.
+Each gesture runs its recognition logic depending on its declared chirality (.left, .right, or .either).
+```swift
+controller.processGestures()
+```
+#### Example usage
+```
+ @Environment(HSController.self) var controller: HSController
+    var body: some View {
+        .task {
+            await controller.requestAuthorization()
+        }
+    }
+```
 ## Gestures
 Documentation on Progress;
 
 ## Utils
-Documentation on Progress;
+The Core folder contains utilitaries and miscellaneous from HandSuite.
+- Constants
+- Extensions
+
+### Constants
+#### Threshholdes
+The `Thresholds` enum defines key constants used by HandSuite’s gesture and finger calculations.  
+These values determine how **finger curlness** and **state transitions** are interpreted during hand tracking.
+##### Purpose
+
+`Thresholds` provides standardized limits for:
+- Measuring how much a finger is **bent (curlness)**  
+- Deciding when a finger should be considered **straight** or **curled**
+
+##### Constants
+
+| Constant | Type | Description |
+|-----------|------|-------------|
+| `maxCurlness` | `Float` | Maximum expected curlness value (`0.5`), corresponding roughly to a 90° finger bend based on cosine similarity. |
+| `curlnessLimitToStraight` | `Float` | Threshold (`0.15`) below which a finger is considered **straight** rather than curled. |
+
+### Extensions 
+The Extensions module provides small but essential utilities that support HandSuite’s core functionality.  
+It includes mappings for ARKit skeleton joints, geometry helpers, color conversion, and math extensions.
+
+#### HandSkeleton
+The `HandSkeleton` dictionary maps **HandSuite joint names** (`HSJoint.Name`) to **ARKit’s `HandSkeleton.JointName`**.  
+It ensures each `HSFinger` and `HSJoint` is correctly bound to ARKit’s underlying skeleton structure.
+
+#### ModelEntity
+A convenience method to generate a small RealityKit sphere with a given color and radius.
+Used throughout HandSuite for debugging and visualizing joint positions.
+```swift
+let sphere = ModelEntity.createSphere(radius: 0.006, hexColor: "FF5733")
+content.add(sphere)
+```
+
+#### SIMD3 Extensions
+Adds extra math convenience to SIMD3<Float>:
+distance(to:). Calculates the Euclidean distance between two 3D points.
+
