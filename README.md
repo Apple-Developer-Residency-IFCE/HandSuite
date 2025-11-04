@@ -77,7 +77,7 @@ The HSHand class represents a human hand, provinding access to `Fingers`, `Joint
 - Calculates the palm direction (HSDirection).
 - Optionally adds 3D debug entities (like spheres) to visualize each joint.
 #### Inicialization:
-```swift
+```
 let leftHand = HSHand (chirality = .left)
 let rightHand = HSHand (chirality = .right)
 ```
@@ -237,7 +237,7 @@ Registers a new gesture recognizer conforming to HSGestureScheme.
 ```swift
 controller.install(gesture: PinchGesture())
 ```
-- `install(gesture:)`
+- `remove(gesture:)`
 Removes a previously installed gesture recognizer.
 ```swift
 controller.remove(gesture: PinchGesture())
@@ -249,7 +249,7 @@ Each gesture runs its recognition logic depending on its declared chirality (.le
 controller.processGestures()
 ```
 #### Example usage
-```
+```swift
  @Environment(HSController.self) var controller: HSController
     var body: some View {
         .task {
@@ -257,16 +257,94 @@ controller.processGestures()
         }
     }
 ```
-## Gestures
-Documentation on Progress;
+## Gestures (OnGoing)
+The Gesture folder contain information for the Gesture process and values that allow that process.
+- HSGestureScheme
+- HSHandGesture
+- HSDirection
+- HSFingerDescription
+- HSGestureDescription
+- HSGestureStepDescription
 
+### HSGestureScheme
+The `HSGestureScheme` protocol defines the base contract for custom gesture recognition in HandSuite.  
+Any gesture that you want to detect (e.g. fist) must conform to this protocol.
+
+#### Responsabilities
+- Defines gesture configuration and recognition logic.  
+- Determines if a gesture has been recognized in the current frame.  
+- Provides a consistent interface for gesture installation and processing inside `HSController`.  
+- Evaluates finger states, directions, and joint distance constraints using `HSGestureDescription`.
+
+#### Inicialization and Use
+```swift
+final class PinchGesture: HSGestureScheme {
+    var chirality: HSChirality = .either
+    var direction: HSDirection = .front
+    var recognitionEvents: HSHandsEvents = .init()
+
+    var description: HSGestureDescription {
+        .hand(
+            direction: .front,
+            fingers: [
+                .init(name: .thumb, state: .neutral, curlness: 0.1),
+                .init(name: .index, state: .neutral, curlness: 0.1)
+            ],
+            jointComparisons: [
+                HSJointComparison(
+                    firstFinger: .thumb,
+                    firstJoint: .tip,
+                    secondFinger: .index,
+                    secondJoint: .tip,
+                    constraint: .lessThanOrEqualTo(0.025)
+                )
+            ]
+        )
+    }
+
+    func recognize(in hand: HSHand) async {
+        recognize(in: hand) // Uses default logic from protocol extension
+    }
+}
+```
+#### Key Methods
+- `recognize(in:)`
+Evaluates whether the gesture is recognized based on the current state of the given hand.
+Checks finger curlness, state, direction, and optional joint distance constraints.
+```swift
+await gesture.recognize(in: controller.leftHand)
+
+```
+#### Examples of Usage
+```swift
+let pinchGesture = PinchGesture()
+controller.install(gesture: pinchGesture)
+
+RealityView { content in
+    controller.addToContent(content)
+}
+.task {
+    await controller.run()
+
+    while true {
+        await MainActor.run {
+            controller.processGestures()
+            if pinchGesture.wasRecognized {
+                print("pinch gesture detected")
+            }
+        }
+        try? await Task.sleep(for: .milliseconds(16)) // ~60 FPS
+    }
+}
+
+```
 ## Utils
 The Core folder contains utilitaries and miscellaneous from HandSuite.
 - Constants
 - Extensions
 
 ### Constants
-#### Threshholdes
+#### Thresholds
 The `Thresholds` enum defines key constants used by HandSuite’s gesture and finger calculations.  
 These values determine how **finger curlness** and **state transitions** are interpreted during hand tracking.
 ##### Purpose
@@ -301,4 +379,3 @@ content.add(sphere)
 #### SIMD3 Extensions
 Adds extra math convenience to SIMD3<Float>:
 distance(to:). Calculates the Euclidean distance between two 3D points.
-
