@@ -287,8 +287,8 @@ final class PinchGesture: HSGestureScheme {
         .hand(
             direction: .front,
             fingers: [
-                .init(name: .thumb, state: .neutral, curlness: 0.1),
-                .init(name: .index, state: .neutral, curlness: 0.1)
+                .init(name: .thumb, state: .neutral, curlness: 0.40),
+                .init(name: .index, state: .neutral, curlness: 0.40)
             ],
             jointComparisons: [
                 HSJointComparison(
