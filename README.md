@@ -65,19 +65,23 @@ struct ImmersiveView: View {
 ### 3. Install and Process a Gesture
 
 ```swift
-let pinchGesture = PinchGesture()
-controller.install(gesture: pinchGesture)
+@Environment(HSController.self) private var controller
+@State private var pinchDetected = false
 
-Task {
-    while true {
-        await MainActor.run {
-            controller.processGestures()
-            if pinchGesture.wasRecognized {
-                print("Pinch detected!")
-            }
-        }
-        try? await Task.sleep(for: .milliseconds(16)) // ~60 FPS
-    }
+var body: some View {
+   VStack {
+      Text(pinchDetected ? "Pinch Detected!" : "Waiting for Pinch...")
+         .font(.title3)
+         .animation(.easeInOut, value: pinchDetected)
+   }
+   .task {
+      let pinchGesture = PinchGesture()
+      controller.install(gesture: pinchGesture)
+
+      for await recognized in controller.observeGesture(pinchGesture) {
+         pinchDetected = recognized
+      }
+   }
 }
 ```
 
